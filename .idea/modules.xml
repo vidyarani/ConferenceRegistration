@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/session-registration.iml" filepath="$PROJECT_DIR$/.idea/modules/session-registration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/session-registration_main.iml" filepath="$PROJECT_DIR$/.idea/modules/session-registration_main.iml" group="session-registration" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/session-registration_test.iml" filepath="$PROJECT_DIR$/.idea/modules/session-registration_test.iml" group="session-registration" />
+    </modules>
+  </component>
+</project>
