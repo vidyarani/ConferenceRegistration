@@ -1,6 +1,6 @@
 package com.tw.vapasi.registration;
 
-public class ConferenceRegistrationTicket {
+public class SeminarRegistrationTicket {
     String sessionName;
     String participantName;
     String participantEmailId;
@@ -15,5 +15,9 @@ public class ConferenceRegistrationTicket {
 
     public void setParticipantName(String participantName) {
         this.participantName = participantName;
+    }
+
+    public void setParticipantEmailId(String participantEmailId) {
+        this.participantEmailId = participantEmailId;
     }
 }

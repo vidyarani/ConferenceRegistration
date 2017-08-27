@@ -4,7 +4,6 @@ public class Session {
     private String name;
     private int numberOfSeats;
     private Seat[] seats;
-    private boolean isAvailable;
 
     Session(String name, Seat[] seats) {
         this.name = name;
@@ -12,19 +11,23 @@ public class Session {
         this.numberOfSeats = seats.length;
     }
 
-    boolean addParticipant(Participant participant) {
+    void addParticipant(Participant participant) {
         for (Seat seat : seats) {
-            if ((seat.getParticipant() != null) && seat.getParticipant().getName().equals(participant.getName()))
+            if ((seat.getParticipant() != null) && seat.getParticipant().getEmailId().equals(participant.getEmailId()))
                 throw new SeatsNotAvailableException("Participant already registered");
-            if (seat.isAvailable()) {
+            if (isAvailabile())
                 seat.setParticipant(participant);
-                return true;
-            }
+            else throw new SeatsNotAvailableException("Seats Not Available");
         }
-        return false;
     }
 
     public String getName() {
         return name;
+    }
+
+    public boolean isAvailabile() {
+        for (Seat seat : seats)
+            if (seat.isAvailable()) return true;
+        return false;
     }
 }
