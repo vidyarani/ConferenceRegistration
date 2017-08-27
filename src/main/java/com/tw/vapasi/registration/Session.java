@@ -13,11 +13,14 @@ public class Session {
     }
 
     boolean addParticipant(Participant participant) {
-        for (Seat seat : seats)
+        for (Seat seat : seats) {
+            if ((seat.getParticipant() != null) && seat.getParticipant().getName().equals(participant.getName()))
+                throw new SeatsNotAvailableException("Participant already registered");
             if (seat.isAvailable()) {
                 seat.setParticipant(participant);
                 return true;
             }
+        }
         return false;
     }
 

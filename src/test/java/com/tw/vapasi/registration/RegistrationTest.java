@@ -45,13 +45,8 @@ public class RegistrationTest {
         Session session1 = new Session("Session1", new Seat[]{createSeat(true), createSeat(false)});
         Session session2 = new Session("Session2", new Seat[]{createSeat(false), createSeat(false)});
         createSessions(new Session[]{session1, session2});
-
-        try {
-            ConferenceRegistrationTicket ticket = registration.register(participant);
-            Assert.assertEquals("Session1", ticket.getSessionName());
-        } catch (SeatsNotAvailableException exception) {
-            System.out.println(exception.getMessage());
-        }
+        ConferenceRegistrationTicket ticket = registration.register(participant);
+        Assert.assertEquals("Session1", ticket.getSessionName());
     }
 
     @Test()
@@ -59,11 +54,32 @@ public class RegistrationTest {
         Session session1 = new Session("Session1", new Seat[]{createSeat(false), createSeat(false)});
         Session session2 = new Session("Session2", new Seat[]{createSeat(true), createSeat(false)});
         createSessions(new Session[]{session1, session2});
+        ConferenceRegistrationTicket ticket = registration.register(participant);
+        Assert.assertEquals("Session2", ticket.getSessionName());
+    }
+
+    @Test()
+    public void returnsErrorMessageIfPartcipantRegistersForMultipleSessions() {
+        Session session1 = new Session("Session1", new Seat[]{createSeat(false), createSeat(false)});
+        Session session2 = new Session("Session2", new Seat[]{createSeat(true), createSeat(false)});
+        createSessions(new Session[]{session1, session2});
         try {
-            ConferenceRegistrationTicket ticket = registration.register(participant);
-            Assert.assertEquals("Session2", ticket.getSessionName());
+            registration.register(participant);
+            Participant participantWithSameDetails = new Participant("Rex", "rex@gmail.com");
+            registration.register(participantWithSameDetails);
         } catch (SeatsNotAvailableException exception) {
-            System.out.println(exception.getMessage());
+            Assert.assertEquals("Participant already registered", exception.getMessage());
         }
+    }
+
+    @Test()
+    public void allowNewPartcipantToRegisterForSameSessionIfAvailable() {
+        Session session1 = new Session("Session1", new Seat[]{createSeat(true), createSeat(true)});
+        Session session2 = new Session("Session2", new Seat[]{createSeat(true), createSeat(false)});
+        createSessions(new Session[]{session1, session2});
+        registration.register(participant);
+        Participant newParticipant = new Participant("Alex", "alex@gmail.com");
+        ConferenceRegistrationTicket newTicket = registration.register(newParticipant);
+        Assert.assertEquals("Session1", newTicket.getSessionName());
     }
 }
