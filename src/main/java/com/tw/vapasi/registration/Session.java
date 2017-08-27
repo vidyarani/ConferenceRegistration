@@ -6,7 +6,8 @@ public class Session {
     private Seat[] seats;
     private boolean isAvailable;
 
-    Session(Seat[] seats) {
+    Session(String name, Seat[] seats) {
+        this.name = name;
         this.seats = seats;
         this.numberOfSeats = seats.length;
     }

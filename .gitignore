@@ -85,7 +85,7 @@ hs_err_pid*
 ### Gradle ###
 .gradle
 /build/
-
+.gradle/buildOutputCleanup
 # Ignore Gradle GUI config
 gradle-app.setting
 
