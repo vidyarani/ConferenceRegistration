@@ -12,7 +12,7 @@ public class Conference {
     public ArrayList<Session> getAvailableSessions() throws SeatsNotAvailableException {
         ArrayList<Session> availableSessions = new ArrayList<Session>();
         for (Session session : sessions)
-            if (session.isAvailabile()) {
+            if (session.isAvailable()) {
                 availableSessions.add(session);
                 return availableSessions;
             }
@@ -20,9 +20,11 @@ public class Conference {
     }
 
     public SeminarRegistrationTicket register(Participant participant, Session selectedSession) throws SeatsNotAvailableException {
-        SeminarRegistrationTicket ticket;
-        selectedSession.addParticipant(participant);
-        ticket = generateTicket(participant, selectedSession);
+        SeminarRegistrationTicket ticket = new SeminarRegistrationTicket();
+        if (selectedSession.isAvailable()) {
+            selectedSession.addParticipant(participant);
+            ticket = generateTicket(participant, selectedSession);
+        } else throw new SeatsNotAvailableException("Seats Not Available");
         return ticket;
     }
 

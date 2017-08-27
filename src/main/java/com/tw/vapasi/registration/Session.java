@@ -15,9 +15,8 @@ public class Session {
         for (Seat seat : seats) {
             if ((seat.getParticipant() != null) && seat.getParticipant().getEmailId().equals(participant.getEmailId()))
                 throw new SeatsNotAvailableException("Participant already registered");
-            if (isAvailabile())
-                seat.setParticipant(participant);
-            else throw new SeatsNotAvailableException("Seats Not Available");
+            seat.setParticipant(participant);
+            break;
         }
     }
 
@@ -25,7 +24,7 @@ public class Session {
         return name;
     }
 
-    public boolean isAvailabile() {
+    public boolean isAvailable() {
         for (Seat seat : seats)
             if (seat.isAvailable()) return true;
         return false;

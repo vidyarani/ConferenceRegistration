@@ -10,8 +10,7 @@ public class ConferenceRegistrationApp {
         Participant participant = new Participant("Vidya", "Vidya@email.com");
         if (availableSessions.size() != 0) {
             SeminarRegistrationTicket ticket = conference.register(participant, availableSessions.get(0));
-            if (ticket != null)
-                System.out.println("Succesfully Registered to " + ticket.getSessionName());
+            System.out.println("Succesfully Registered to " + ticket.getSessionName());
         }
     }
 }
