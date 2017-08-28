@@ -14,7 +14,7 @@ public class Session {
     void addParticipant(Participant participant) {
         for (Seat seat : seats) {
             if ((seat.getParticipant() != null) && seat.getParticipant().getEmailId().equals(participant.getEmailId()))
-                throw new SeatsNotAvailableException("Participant already registered");
+                throw new ParticipantAlreadyRegisteredException("Participant already registered");
             seat.setParticipant(participant);
             break;
         }

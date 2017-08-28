@@ -1,8 +1,8 @@
 package com.tw.vapasi.registration;
 
 public class Participant {
-    private String name;
-    private String emailId;
+    private final String name;
+    private final String emailId;
 
     Participant(String name, String emailId) {
         this.name = name;

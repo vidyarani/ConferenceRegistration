@@ -69,7 +69,7 @@ public class ConferenceRegistrationTest {
     @Test()
     public void returnSessionNameIfSeatsAvailableForRegistratoin() {
         Session session = new Session("Session1", new Seat[]{createSeat(true), createSeat(false)});
-        SeminarRegistrationTicket ticket = conference.register(participant, session);
+        ConferenceRegistrationTicket ticket = conference.register(participant, session);
         Assert.assertEquals("Session1", ticket.getSessionName());
     }
 
@@ -80,7 +80,7 @@ public class ConferenceRegistrationTest {
         try {
             conference.register(participant, session1);
             conference.register(participant, session2);
-        } catch (SeatsNotAvailableException exception) {
+        } catch (ParticipantAlreadyRegisteredException exception) {
             Assert.assertEquals("Participant already registered", exception.getMessage());
         }
     }
@@ -90,7 +90,7 @@ public class ConferenceRegistrationTest {
         Session session = new Session("Session1", new Seat[]{createSeat(true), createSeat(true)});
         conference.register(participant, session);
         Participant newParticipant = new Participant("Alex", "alex@gmail.com");
-        SeminarRegistrationTicket newTicket = conference.register(newParticipant, session);
+        ConferenceRegistrationTicket newTicket = conference.register(newParticipant, session);
         Assert.assertEquals("Session1", newTicket.getSessionName());
     }
 }

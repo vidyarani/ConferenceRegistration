@@ -12,15 +12,15 @@ public class Conference {
     public ArrayList<Session> getAvailableSessions() throws SeatsNotAvailableException {
         ArrayList<Session> availableSessions = new ArrayList<Session>();
         for (Session session : sessions)
-            if (session.isAvailable()) {
+            if (session.isAvailable())
                 availableSessions.add(session);
-                return availableSessions;
-            }
-        throw new SeatsNotAvailableException("Seats Not Available");
+        if (availableSessions.size() == 0)
+            throw new SeatsNotAvailableException("Seats Not Available");
+        return availableSessions;
     }
 
-    public SeminarRegistrationTicket register(Participant participant, Session selectedSession) throws SeatsNotAvailableException {
-        SeminarRegistrationTicket ticket = new SeminarRegistrationTicket();
+    public ConferenceRegistrationTicket register(Participant participant, Session selectedSession) throws SeatsNotAvailableException {
+        ConferenceRegistrationTicket ticket;
         if (selectedSession.isAvailable()) {
             selectedSession.addParticipant(participant);
             ticket = generateTicket(participant, selectedSession);
@@ -28,11 +28,7 @@ public class Conference {
         return ticket;
     }
 
-    private SeminarRegistrationTicket generateTicket(Participant participant, Session session) {
-        SeminarRegistrationTicket ticket = new SeminarRegistrationTicket();
-        ticket.setSessionName(session.getName());
-        ticket.setParticipantName(participant.getName());
-        ticket.setParticipantEmailId(participant.getEmailId());
-        return ticket;
+    private ConferenceRegistrationTicket generateTicket(Participant participant, Session session) {
+        return new ConferenceRegistrationTicket(session.getName(), participant.getName(), participant.getEmailId());
     }
 }
