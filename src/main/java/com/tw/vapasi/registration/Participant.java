@@ -16,4 +16,10 @@ public class Participant {
     public String getEmailId() {
         return emailId;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        Participant participant = (Participant) object;
+        return (this.name.equals(participant.getName()) && this.emailId.equals(participant.getEmailId()));
+    }
 }

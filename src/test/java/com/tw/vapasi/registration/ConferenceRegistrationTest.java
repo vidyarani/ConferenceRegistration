@@ -7,49 +7,44 @@ import org.junit.Assert;
 import java.util.ArrayList;
 
 public class ConferenceRegistrationTest {
-    Participant participant;
-    Session[] sessions;
-    Conference conference;
+    Participant Rex, Alex, Bob, John;
 
     @Before
     public void setUp() {
-        participant = new Participant("Rex", "rex@gmail.com");
-        sessions = new Session[2];
-        conference = new Conference(sessions);
+        Rex = new Participant("Rex", "rex@gmail.com");
+        Alex = new Participant("Alex", "alex@gmail.com");
+        Bob = new Participant("Bob", "bob@gmail.com");
+        John = new Participant("John", "john@gmail.com");
     }
 
-    private Session[] createSessions(Session[] sessions) {
-        for (int i = 0; i < sessions.length; i++)
-            this.sessions[i] = sessions[i];
+    private Session[] createSessions() {
+        Session[] sessions = new Session[2];
+        for (int i = 0; i < sessions.length; i++) {
+            sessions[i] = new Session("Session" + (i + 1), new Seat[]{new Seat(), new Seat()});
+        }
         return sessions;
     }
 
-    private Seat createSeat(boolean isAvailable) {
-        Seat seat = new Seat();
-        seat.setAvailable(isAvailable);
-        return seat;
-    }
-
     @Test()
-    public void returnsTrueIfSessionIsAvailable() {
-        Session session1 = new Session("Session1", new Seat[]{createSeat(true), createSeat(false)});
-        Session session2 = new Session("Session2", new Seat[]{createSeat(false), createSeat(false)});
-        createSessions(new Session[]{session1, session2});
+    public void returnsTrueIfSessionsAreAvailable() {
+        Conference conference = new Conference(createSessions());
         try {
             ArrayList<Session> availableSessions = conference.getAvailableSessions();
-            Assert.assertEquals(1, availableSessions.size());
+            Assert.assertEquals(2, availableSessions.size());
         } catch (SeatsNotAvailableException exception) {
-            System.out.println(exception.getMessage());
         }
     }
 
     @Test()
     public void returnsMessageIfSessionsNotAvailable() {
-        Session session1 = new Session("Session1", new Seat[]{createSeat(false), createSeat(false)});
-        Session session2 = new Session("Session2", new Seat[]{createSeat(false), createSeat(false)});
-        createSessions(new Session[]{session1, session2});
+        Session[] sessions = createSessions();
+        Conference conference = new Conference(sessions);
         try {
-            conference.getAvailableSessions();
+            conference.register(Rex, sessions[0]);
+            conference.register(Alex, sessions[0]);
+            conference.register(Bob, sessions[1]);
+            conference.register(John, sessions[1]);
+            ArrayList<Session> avlbsessions = conference.getAvailableSessions();
         } catch (SeatsNotAvailableException exception) {
             Assert.assertEquals("Seats Not Available", exception.getMessage());
         }
@@ -57,29 +52,33 @@ public class ConferenceRegistrationTest {
 
     @Test()
     public void returnsErrorMessageIfRegisteredToUnavailableSession() {
-        Session session = new Session("Session1", new Seat[]{createSeat(false), createSeat(false)});
+        Session[] sessions = createSessions();
+        Conference conference = new Conference(sessions);
         try {
-            conference.register(participant, session);
+            conference.register(Rex, sessions[0]);
+            conference.register(Alex, sessions[0]);
+            conference.register(Bob, sessions[0]);
         } catch (SeatsNotAvailableException exception) {
             Assert.assertEquals("Seats Not Available", exception.getMessage());
         }
-
     }
 
     @Test()
-    public void returnSessionNameIfSeatsAvailableForRegistratoin() {
-        Session session = new Session("Session1", new Seat[]{createSeat(true), createSeat(false)});
-        ConferenceRegistrationTicket ticket = conference.register(participant, session);
+    public void returnSessionNameIfAfterSuccessfulRegistratoin() {
+        Session[] sessions = createSessions();
+        Conference conference = new Conference(sessions);
+
+        ConferenceRegistrationTicket ticket = conference.register(Rex, sessions[0]);
         Assert.assertEquals("Session1", ticket.getSessionName());
     }
 
     @Test()
     public void returnsErrorMessageIfPartcipantRegistersForMultipleSessions() {
-        Session session1 = new Session("Session1", new Seat[]{createSeat(false), createSeat(true)});
-        Session session2 = new Session("Session2", new Seat[]{createSeat(true), createSeat(false)});
+        Session[] sessions = createSessions();
+        Conference conference = new Conference(sessions);
         try {
-            conference.register(participant, session1);
-            conference.register(participant, session2);
+            conference.register(Rex, sessions[0]);
+            conference.register(Rex, sessions[0]);
         } catch (ParticipantAlreadyRegisteredException exception) {
             Assert.assertEquals("Participant already registered", exception.getMessage());
         }
@@ -87,10 +86,10 @@ public class ConferenceRegistrationTest {
 
     @Test()
     public void allowNewPartcipantToRegisterForSameSessionIfAvailable() {
-        Session session = new Session("Session1", new Seat[]{createSeat(true), createSeat(true)});
-        conference.register(participant, session);
-        Participant newParticipant = new Participant("Alex", "alex@gmail.com");
-        ConferenceRegistrationTicket newTicket = conference.register(newParticipant, session);
+        Session[] sessions = createSessions();
+        Conference conference = new Conference(sessions);
+        conference.register(Rex, sessions[0]);
+        ConferenceRegistrationTicket newTicket = conference.register(Alex, sessions[0]);
         Assert.assertEquals("Session1", newTicket.getSessionName());
     }
 }

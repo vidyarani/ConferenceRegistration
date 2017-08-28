@@ -22,7 +22,6 @@ public class ConferenceRegistrationApp {
 
     private static Seat createSeat(boolean isAvailable) {
         Seat seat = new Seat();
-        seat.setAvailable(isAvailable);
         return seat;
     }
 }
