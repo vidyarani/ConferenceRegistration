@@ -19,8 +19,8 @@ public class ConferenceRegistrationTest {
 
     private Session[] createSessions() {
         Session[] sessions = new Session[2];
-        for (int i = 0; i < sessions.length; i++) {
-            sessions[i] = new Session("Session" + (i + 1), new Seat[]{new Seat(), new Seat()});
+        for (int index = 0; index < sessions.length; index++) {
+            sessions[index] = new Session("Session" + (index + 1), new Seat[]{new Seat(), new Seat()});
         }
         return sessions;
     }
